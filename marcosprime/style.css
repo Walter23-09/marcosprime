@@ -1,0 +1,604 @@
+/* ============================================================
+   RESET & VARIÁVEIS
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#0a0a0c;
+  --bg-2:#101014;
+  --bg-3:#16161b;
+  --line:rgba(200,162,74,.18);
+  --gold:#c8a24a;
+  --gold-light:#e3c877;
+  --gold-dark:#8f7130;
+  --text:#e9e6e0;
+  --muted:#9a948a;
+  --whats:#25d366;
+  --font-title:'Playfair Display',Georgia,serif;
+  --font-body:'Inter',system-ui,-apple-system,sans-serif;
+  --radius:6px;
+  --transition:.35s cubic-bezier(.25,.8,.35,1);
+}
+/* Container do avatar — mantém o anel dourado girando */
+.avatar{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  position:relative;
+  margin-bottom:26px;
+  background:linear-gradient(135deg,var(--bg-3),var(--bg-2));
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  overflow:hidden;              /* ← essencial para cortar a imagem */
+}
+
+/* A logo em si */
+.avatar__inner{
+  width:100%;
+  height:100%;
+  border-radius:50%;            /* ← deixa redonda */
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:#fff;              /* mantém o fundo branco dentro do círculo */
+}
+
+/* A imagem da logo */
+.avatar__inner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;             /* ← preenche o círculo sem distorcer */
+  object-position:center;       /* ← centraliza */
+  border-radius:50%;            /* ← garante o círculo também na imagem */
+  display:block;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+
+/* Fundo com textura sutil + brilho dourado */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,162,74,.15), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(200,162,74,.06), transparent 60%),
+    var(--bg);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;opacity:.035;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ============================================================
+   WRAPPER
+   ============================================================ */
+.page{
+  width:min(100% - 2rem, 480px);
+  margin-inline:auto;
+  padding:52px 0 60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100vh;
+}
+
+/* ============================================================
+   AVATAR / LOGO
+   ============================================================ */
+.avatar{
+  width:118px;height:118px;border-radius:50%;
+  position:relative;margin-bottom:26px;
+  background:linear-gradient(135deg,var(--bg-3),var(--bg-2));
+  border:1px solid var(--line);
+  display:grid;place-items:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+}
+.avatar::before{
+  content:"";position:absolute;inset:-7px;border-radius:50%;
+  border:1px solid rgba(200,162,74,.35);
+  border-top-color:var(--gold);border-bottom-color:transparent;
+  animation:spin 8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar__inner{
+  width:100%;height:100%;border-radius:50%;
+  display:grid;place-items:center;
+  font-family:var(--font-title);font-weight:700;
+  font-size:2.6rem;color:var(--gold);
+  letter-spacing:.02em;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(200,162,74,.14), transparent 55%),
+    linear-gradient(135deg,#15151a,#0d0d10);
+}
+
+/* ============================================================
+   IDENTIDADE
+   ============================================================ */
+.brand{text-align:center;margin-bottom:30px;padding:0 10px}
+.brand__name{
+  font-family:var(--font-title);
+  font-size:2rem;font-weight:600;
+  letter-spacing:.01em;line-height:1.1;
+  margin-bottom:8px;
+}
+.brand__name em{font-style:italic;color:var(--gold);font-weight:400}
+.brand__handle{
+  font-size:.76rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:16px;
+}
+.brand__bio{
+  font-size:.92rem;color:var(--muted);font-weight:300;
+  max-width:380px;margin-inline:auto;line-height:1.65;
+}
+
+/* Selo de destaque */
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;padding:7px 16px;
+  border:1px solid var(--line);border-radius:40px;
+  font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:600;color:var(--gold);
+  background:rgba(200,162,74,.06);
+}
+.badge .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--whats);
+  box-shadow:0 0 0 0 rgba(37,211,102,.7);
+  animation:pulseDot 2s infinite;
+}
+@keyframes pulseDot{
+  0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}
+  70%{box-shadow:0 0 0 8px rgba(37,211,102,0)}
+  100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+.links{
+  width:100%;
+  display:flex;flex-direction:column;gap:14px;
+  margin-bottom:38px;
+}
+
+.link{
+  position:relative;
+  display:flex;align-items:center;gap:16px;
+  width:100%;padding:17px 22px;
+  background:rgba(22,22,27,.75);
+  border:1px solid rgba(233,230,224,.09);
+  border-radius:var(--radius);
+  backdrop-filter:blur(10px);
+  transition:var(--transition);
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.link::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);transform:scaleY(0);transform-origin:top;
+  transition:transform var(--transition);
+}
+
+.link:hover{
+  border-color:var(--line);
+  background:rgba(30,30,37,.95);
+  transform:translateY(-3px);
+  box-shadow:0 14px 34px rgba(0,0,0,.5);
+}
+.link:hover::before{transform:scaleY(1)}
+
+.link__icon{
+  width:42px;height:42px;flex:none;
+  display:grid;place-items:center;
+  border-radius:var(--radius);
+  background:rgba(200,162,74,.09);
+  border:1px solid rgba(200,162,74,.14);
+  color:var(--gold);
+  font-size:1.05rem;
+  transition:var(--transition);
+}
+.link:hover .link__icon{
+  background:var(--gold);color:#0a0a0c;border-color:var(--gold);
+}
+
+.link__body{flex:1;min-width:0}
+.link__title{
+  font-family:var(--font-title);
+  font-size:1.06rem;font-weight:600;
+  letter-spacing:.01em;line-height:1.25;
+  margin-bottom:3px;
+}
+.link__desc{
+  font-size:.76rem;color:var(--muted);font-weight:300;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.link__arrow{
+  color:var(--muted);font-size:.9rem;flex:none;
+  transition:var(--transition);
+}
+.link:hover .link__arrow{color:var(--gold);transform:translateX(4px)}
+
+/* Variante: link em destaque (WhatsApp) */
+.link--feature{
+  background:linear-gradient(135deg, rgba(200,162,74,.16), rgba(200,162,74,.05));
+  border-color:rgba(200,162,74,.4);
+  padding:20px 22px;
+}
+.link--feature .link__icon{
+  background:var(--gold);color:#0a0a0c;border-color:var(--gold);
+}
+.link--feature .link__title{font-size:1.15rem}
+.link--feature::before{background:var(--whats)}
+.link--feature:hover{
+  border-color:var(--gold);
+  box-shadow:0 16px 40px rgba(200,162,74,.22);
+}
+
+/* Variante: WhatsApp puro */
+.link--whats .link__icon{
+  background:rgba(37,211,102,.1);
+  border-color:rgba(37,211,102,.25);
+  color:var(--whats);
+}
+.link--whats:hover .link__icon{
+  background:var(--whats);color:#fff;border-color:var(--whats);
+}
+
+/* ============================================================
+   DIVISOR DE SEÇÃO
+   ============================================================ */
+.section-label{
+  width:100%;
+  display:flex;align-items:center;gap:14px;
+  margin:6px 0 4px;
+}
+.section-label span{
+  font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;white-space:nowrap;
+}
+.section-label::before,
+.section-label::after{
+  content:"";height:1px;flex:1;
+  background:linear-gradient(90deg,transparent,rgba(200,162,74,.3),transparent);
+}
+
+/* ============================================================
+   REDES SOCIAIS
+   ============================================================ */
+.socials{
+  display:flex;gap:14px;justify-content:center;
+  flex-wrap:wrap;margin-bottom:40px;
+}
+.socials a{
+  width:50px;height:50px;border-radius:50%;
+  display:grid;place-items:center;
+  background:rgba(22,22,27,.8);
+  border:1px solid rgba(233,230,224,.1);
+  color:var(--muted);
+  transition:var(--transition);
+  font-size:1rem;
+}
+.socials a:hover{
+  background:var(--gold);border-color:var(--gold);
+  color:#0a0a0c;transform:translateY(-4px) scale(1.05);
+  box-shadow:0 12px 28px rgba(200,162,74,.3);
+}
+
+/* ============================================================
+   HORÁRIO / LOCAL
+   ============================================================ */
+.info-card{
+  width:100%;
+  padding:22px 24px;
+  background:rgba(16,16,20,.7);
+  border:1px solid rgba(233,230,224,.07);
+  border-radius:var(--radius);
+  margin-bottom:30px;
+}
+.info-card h4{
+  font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.info-card ul{display:flex;flex-direction:column;gap:9px}
+.info-card li{
+  display:flex;justify-content:space-between;gap:16px;
+  font-size:.82rem;
+}
+.info-card li span:first-child{color:var(--muted);font-weight:300}
+.info-card li span:last-child{color:#d5d0c7;font-weight:500;white-space:nowrap}
+.info-card li.closed span:last-child{color:#e0605f}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  text-align:center;margin-top:auto;padding-top:20px;
+}
+.footer__logo{
+  font-family:var(--font-title);
+  font-size:1rem;font-weight:600;
+  letter-spacing:.06em;margin-bottom:8px;
+}
+.footer__logo em{font-style:italic;color:var(--gold)}
+.footer p{
+  font-size:.7rem;color:#5c5851;font-weight:300;
+  letter-spacing:.04em;
+}
+.footer p + p{margin-top:6px}
+
+/* ============================================================
+   ANIMAÇÃO DE ENTRADA
+   ============================================================ */
+.fade-up{
+  opacity:0;transform:translateY(22px);
+  animation:fadeUp .7s cubic-bezier(.25,.8,.35,1) forwards;
+}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+
+.d1{animation-delay:.06s}
+.d2{animation-delay:.12s}
+.d3{animation-delay:.18s}
+.d4{animation-delay:.24s}
+.d5{animation-delay:.30s}
+.d6{animation-delay:.36s}
+.d7{animation-delay:.42s}
+.d8{animation-delay:.48s}
+.d9{animation-delay:.54s}
+.d10{animation-delay:.60s}
+
+/* ============================================================
+   TOAST DE COMPARTILHAR
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,120%);
+  background:var(--gold);color:#0a0a0c;
+  padding:13px 26px;border-radius:40px;
+  font-size:.78rem;font-weight:600;letter-spacing:.08em;
+  box-shadow:0 14px 36px rgba(200,162,74,.4);
+  transition:transform .45s cubic-bezier(.25,.8,.35,1);
+  z-index:999;white-space:nowrap;
+}
+.toast.show{transform:translate(-50%,0)}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media(max-width:420px){
+  .page{padding:36px 0 48px}
+  .avatar{width:100px;height:100px;margin-bottom:22px}
+  .avatar__inner{font-size:2.2rem}
+  .brand__name{font-size:1.7rem}
+  .brand__bio{font-size:.86rem}
+  .link{padding:15px 18px;gap:14px}
+  .link__title{font-size:1rem}
+  .link--feature{padding:18px}
+  .link--feature .link__title{font-size:1.06rem}
+  .link__icon{width:38px;height:38px;font-size:.95rem}
+  .socials a{width:46px;height:46px}
+}
+
+/* ============================================================
+   ACESSIBILIDADE
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .fade-up{opacity:1;transform:none}
+}
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--gold);outline-offset:3px;border-radius:var(--radius);
+}
+
+
+.credits{
+  --c-gold:#c8a24a;
+  --c-gold-lt:#e3c877;
+  --c-bg:#070709;
+  --c-text:#e9e6e0;
+  --c-muted:#8a857c;
+  position:relative;
+  background:var(--c-bg);
+  padding:42px 0;
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--c-text);
+}
+.credits::before{
+  content:"";
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:65%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--c-gold),transparent);
+  opacity:.5;
+}
+
+.credits__inner{
+  width:min(100% - 2rem,600px);
+  margin-inline:auto;
+}
+
+/* ============ CARD ============ */
+.credits__card{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  padding:20px 26px;
+  background:
+    radial-gradient(ellipse at 0% 50%, rgba(200,162,74,.12), transparent 60%),
+    linear-gradient(135deg,#101014,#0a0a0c);
+  border:1px solid rgba(200,162,74,.25);
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+  transition:.4s cubic-bezier(.25,.8,.35,1);
+}
+.credits__card:hover{
+  border-color:rgba(200,162,74,.55);
+  transform:translateY(-2px);
+  box-shadow:0 20px 45px rgba(0,0,0,.55);
+}
+
+/* Detalhe de canto */
+.credits__card::before{
+  content:"";
+  position:absolute;top:0;right:0;
+  width:44px;height:44px;
+  border-top:1px solid var(--c-gold);
+  border-right:1px solid var(--c-gold);
+  opacity:.6;
+}
+
+/* ============ QUADRADO DA LOGO — MAIOR ============ */
+.credits__logo{
+  width:88px;height:88px;flex:none;
+  border-radius:14px;
+  display:grid;place-items:center;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(200,162,74,.22), transparent 60%),
+    linear-gradient(135deg,#1a1a20,#0d0d10);
+  border:1px solid rgba(200,162,74,.45);
+  position:relative;
+  overflow:hidden;
+  transition:.4s cubic-bezier(.25,.8,.35,1);
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+.credits__logo img{
+  width:72%;
+  height:72%;
+  object-fit:contain;
+}
+.credits__logo span{
+  font-family:'Playfair Display',Georgia,serif;
+  font-weight:700;
+  font-size:2rem;
+  color:var(--c-gold);
+  letter-spacing:.02em;
+}
+/* Brilho varrendo no hover */
+.credits__logo::after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(200,162,74,.3),transparent 60%);
+  transform:translateX(-130%);
+  transition:transform .8s ease;
+}
+.credits__card:hover .credits__logo::after{
+  transform:translateX(130%);
+}
+.credits__card:hover .credits__logo{
+  border-color:var(--c-gold);
+  box-shadow:0 0 28px rgba(200,162,74,.4);
+}
+
+/* ============ INFO ============ */
+.credits__info{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.credits__label{
+  font-size:.6rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--c-gold);
+  font-weight:600;
+}
+.credits__name{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.2rem;
+  font-weight:600;
+  letter-spacing:-.005em;
+  line-height:1.25;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.credits__role{
+  font-size:.74rem;
+  color:var(--c-muted);
+  font-weight:300;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* ============ BOTÃO WHATSAPP ============ */
+.credits__wa{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 20px;
+  border-radius:8px;
+  background:var(--c-gold);
+  border:1px solid var(--c-gold);
+  color:#0a0a0c;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  flex:none;
+  transition:.35s cubic-bezier(.25,.8,.35,1);
+  text-decoration:none;
+}
+.credits__wa svg{width:16px;height:16px;transition:transform .35s ease}
+.credits__wa:hover{
+  background:var(--c-gold-lt);
+  border-color:var(--c-gold-lt);
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(200,162,74,.35);
+}
+.credits__wa:hover svg{transform:scale(1.12)}
+
+/* ============ RODAPÉ FINO ============ */
+.credits__bottom{
+  text-align:center;
+  margin-top:16px;
+}
+.credits__bottom p{
+  font-size:.68rem;
+  color:#5c5851;
+  font-weight:300;
+  letter-spacing:.02em;
+}
+.credits__bottom strong{
+  color:var(--c-gold);
+  font-weight:600;
+}
+
+/* ============ RESPONSIVO ============ */
+@media(max-width:560px){
+  .credits__card{
+    flex-wrap:wrap;
+    gap:16px;
+    padding:18px 20px;
+  }
+  .credits__logo{width:76px;height:76px;border-radius:12px}
+  .credits__logo span{font-size:1.7rem}
+  .credits__name{font-size:1.08rem}
+  .credits__wa{
+    width:100%;
+    justify-content:center;
+    order:3;
+    margin-top:6px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .credits *{transition-duration:.01ms!important}
+}
