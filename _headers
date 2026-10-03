@@ -1,0 +1,6 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'sha256-dgkQEIHcfmooOttIrDaCUubpx6WnuCKSvFrF76GK9Hk=' 'unsafe-hashes' 'sha256-ZJXHOAjC1JQ3dI+NNACAcYrNM+Z6h+rFu3PlX3SayHY=' 'sha256-wSPVEmfPyNDOc8dyuqSGfwSZaHqRi5MibOxTyVRAOFc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'none'; upgrade-insecure-requests
